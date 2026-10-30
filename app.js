@@ -25,8 +25,8 @@ const userRoutes = require('./routes/users');
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
 
-// Destructured import required for connect-mongo v5
-const { MongoStore } = require('connect-mongo');
+// Direct import for connect-mongo
+const MongoStore = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp-maptiler';
 
@@ -102,7 +102,8 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
-app.all('*', (req, res, next) => {
+// ✅ FIXED: Named wildcard regex compatible with path-to-regexp v8+
+app.all(/(.*)/, (req, res, next) => {
     next(new ExpressError('PAGE NOT FOUND', 404));
 });
 

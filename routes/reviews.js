@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const { campgroundSchema } = require('../schemas.js');
-const { validateReview, isLoggedIn } = require("../middleware")
+const { validateReview, isLoggedIn } = require('../middlewares');
 
 // const path = require('path');
 const catchAsync = require('../utils/catchAsync')

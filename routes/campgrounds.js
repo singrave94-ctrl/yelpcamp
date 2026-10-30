@@ -7,7 +7,7 @@ const { storage } = require('../cloudinary');
 const upload = multer({ storage })
 const { campgroundSchema } = require('../schemas.js');
 
-const { isLoggedIn, isAuthor, validateCampground} = require('../middleware')
+const { isLoggedIn, isAuthor, validateCampground } = require('../middlewares');
 
 
 

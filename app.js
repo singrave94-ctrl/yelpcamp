@@ -22,10 +22,12 @@ const helmet = require('helmet');
 
 // Route Imports
 const userRoutes = require('./routes/users');
-const campgrounds = require('./routes/campgrounds'); // 👈 Match variable name
-const reviews = require('./routes/reviews');         // 👈 Match variable name
+const campgrounds = require('./routes/campgrounds');
+const reviews = require('./routes/reviews');
 
-const MongoStore = require('connect-mongo');
+// ✅ FIXED: Direct import without destructuring
+
+const { MongoStore } = require('connect-mongo'); // ✅
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp-maptiler';
 
@@ -49,6 +51,8 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
+
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 3600,
@@ -57,9 +61,10 @@ const store = MongoStore.create({
     }
 });
 
-store.on("error", function(e) {
+store.on("error", function (e) {
     console.log("SESSION STORE ERROR", e);
 });
+
 
 const sessionConfig = {
     store,
@@ -92,10 +97,10 @@ app.use((req, res, next) => {
     next();
 });
 
-// Mounted Routes (Using exact variable names imported above)
+// Mounted Routers
 app.use('/', userRoutes);
-app.use('/campgrounds', campgrounds);              // 👈 Updated from campgroundsRoutes
-app.use('/campgrounds/:id/reviews', reviews);       // 👈 Updated from reviewsRoutes
+app.use('/campgrounds', campgrounds);
+app.use('/campgrounds/:id/reviews', reviews);
 
 app.get('/', (req, res) => {
     res.render('home');

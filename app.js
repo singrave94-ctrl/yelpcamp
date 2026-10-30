@@ -177,7 +177,7 @@
 
 
 
-    app.all('*', (req, res, next) => {
+    app.all('/{*path}', (req, res, next) => {
         next(new ExpressError('page not found'.toUpperCase(), 404))
     })
 

@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync')
 const multer  = require('multer')
 const { storage } = require('../cloudinary');
 const upload = multer({ storage })
+const { campgroundSchema } = require('../schemas.js');
 
 const { isLoggedIn, isAuthor, validateCampground} = require('../middleware')
 

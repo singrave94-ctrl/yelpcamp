@@ -1,5 +1,6 @@
 const Campground = require('../models/campgrounds');
 const cloudinary = require('cloudinary').v2;
+const { reviewSchema } = require('../schemas.js');
 
 const maptilerClient = require("@maptiler/client");
 maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;

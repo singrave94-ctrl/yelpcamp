@@ -25,9 +25,8 @@ const userRoutes = require('./routes/users');
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
 
-// ✅ FIXED: Direct import without destructuring
-
-const { MongoStore } = require('connect-mongo'); // ✅
+// Destructured import required for connect-mongo v5
+const { MongoStore } = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp-maptiler';
 
@@ -51,8 +50,6 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
-
-
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 3600,
@@ -64,7 +61,6 @@ const store = MongoStore.create({
 store.on("error", function (e) {
     console.log("SESSION STORE ERROR", e);
 });
-
 
 const sessionConfig = {
     store,

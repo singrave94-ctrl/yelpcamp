@@ -8,14 +8,11 @@ const path = require('path');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
-const { campgroundSchema, reviewSchema } = require('./schemas.js');
 
 const ExpressError = require('./utils/ExpressError');
 const session = require('express-session');
 const methodOverride = require('method-override');
 const passport = require('passport');
-const Campground = require('./models/campgrounds');
-const Review = require('./models/review');
 const localStratagy = require('passport-local');
 const User = require('./models/user');
 const helmet = require('helmet');
@@ -25,10 +22,10 @@ const userRoutes = require('./routes/users');
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
 
-// Direct import for connect-mongo
 const MongoStore = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/yelp-camp-maptiler';
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
 mongoose.connect(dbUrl);
 
@@ -54,7 +51,7 @@ const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 3600,
     crypto: {
-        secret: 'thisshouldbeabettersecret!'
+        secret
     }
 });
 
@@ -65,7 +62,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'bettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -102,7 +99,6 @@ app.get('/', (req, res) => {
     res.render('home');
 });
 
-// ✅ FIXED: Named wildcard regex compatible with path-to-regexp v8+
 app.all(/(.*)/, (req, res, next) => {
     next(new ExpressError('PAGE NOT FOUND', 404));
 });
@@ -112,7 +108,6 @@ app.use((err, req, res, next) => {
     if (!err.message) err.message = 'Oh No, Something went wrong';
     res.status(statusCode).render('error', { err });
 });
-
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(3000, () => {

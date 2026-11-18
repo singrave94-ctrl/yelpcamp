@@ -26,7 +26,7 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000)
         const price = Math.floor(Math.random() * 20) + 10
         const camp = new Campground ({
-            author: '6ade30e4171f29a800025e35',
+            author: '6afde7aa275884940165fc11',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
 
                         geometry: {
